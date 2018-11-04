@@ -1,0 +1,23 @@
+<html>
+    <body>
+
+    <h1>Redis Content:</h1>
+
+    {{ range $key, $value := .redisContent }}
+    <li><strong>{{ $key }}</strong>: {{ $value }}</li>
+    {{ end }}
+
+    <br/>
+    <form action="/" method="post" autocomplete="off">
+        Key: <input type="text" name="key" style="width: 100px">
+        Value: <input type="text" name="val"  style="width: 100px">
+        <input type="submit" value="Submit">
+    </form>
+
+    <form action="/clear" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="Clear">
+    </form>
+
+    </body>
+</html>
