@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"os"
 )
 
 const REDIS_HASHNAME = "DEMO_HASH"
@@ -14,8 +15,13 @@ const REDIS_HASHNAME = "DEMO_HASH"
 var RedisCleint *redis.Client
 
 func NewClient() {
+	redisHost := "localhost:6379"
+	if os.Getenv("REDIS_HOST") != "" {
+		redisHost = os.Getenv("REDIS_HOST")
+	}
+
 	RedisCleint = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     redisHost,
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
