@@ -4,6 +4,7 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"io"
 	"net/http"
@@ -50,6 +51,7 @@ func main() {
 	e.GET("/", index).Name = "index"
 	e.POST("/clear", clear).Name = "clear"
 	e.POST("/", create).Name = "create"
+	e.GET("/hash", hash).Name = "hash"
 	e.Logger.Fatal(e.Start(":3000"))
 }
 
@@ -77,4 +79,10 @@ func clear(c echo.Context) error {
 		panic(err)
 	}
 	return c.Redirect(http.StatusMovedPermanently, "/")
+}
+
+func hash(c echo.Context) error {
+	str := c.Param("string")
+	bytes, _ := bcrypt.GenerateFromPassword([]byte(str), 14)
+	return c.String(http.StatusOK, string(bytes))
 }
